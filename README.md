@@ -37,7 +37,7 @@ Esta es la ventana que se nos muestra al querer renombrar un archivo o directori
 Después de crear, eliminar o renombrar un archivo o directorio, se nos actualizará automáticamente la lista con los nuevos datos.
 
 ### 3. Realizar varios commits en la herramienta GitHub que demuestren el desarrollo de la aplicación desde principio a fin.
-![Commits](https://github.com/mtoledot1/Capturas/blob/master/Practica%206/Commits.jpg)
+![Commits](https://github.com/mtoledot1/Capturas/blob/master/Practica%206/Commits.png)
 
 ## Resultado(s) Obtenido(s)
 
