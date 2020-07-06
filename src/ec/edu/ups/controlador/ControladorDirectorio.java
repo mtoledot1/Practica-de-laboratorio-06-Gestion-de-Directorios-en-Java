@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +29,24 @@ public class ControladorDirectorio {
 	return ruta;
     }
 
-    public void setRuta(String ruta) {
+    public boolean setRuta(String ruta) {
 	this.ruta = ruta;
 	archivo = new File(ruta);
 	archivos = archivo.listFiles();
+	if(archivo.exists())
+	    if(archivo.isDirectory())
+		return true;
+	return false;
     }
 
     public File getArchivo() {
 	return archivo;
     }
 
+    public void actualizarArchivos(){
+	archivos = archivo.listFiles();
+    }
+    
     public void setArchivo(File archivo) {
 	this.archivo = archivo;
     }
@@ -95,29 +104,33 @@ public class ControladorDirectorio {
     }
     
     public void eliminarDirectorio(String nombre) throws IOException{
-	File nuevo = new File(ruta+"/"+nombre);
+	File nuevo = new File(nombre);
 	if(nuevo.isFile())
 	    nuevo.delete();
-	else
-	    nuevo.createNewFile();
+	else{
+	    eliminar(nuevo);
+	    nuevo.delete();
+	}
     }
     
     public void eliminar(File directorio){
 	for(File f : directorio.listFiles()){
 	    if(f.isFile())
 		f.delete();
-	    else
+	    else{
 		eliminar(f);
+		f.delete();
+	    }
 	}
     }
     
     public void renombrarDirectorio(String actual, String nuevo) throws IOException{
-	File arch = new File(ruta+"/"+actual);
-	arch.renameTo(new File(ruta+"/"+nuevo));
+	File arch = new File(actual);
+	arch.renameTo(new File(nuevo));
     }
     
     public String mostrarInformacion(String nombre){
-	File nuevo = new File(ruta+"/"+nombre);
+	File nuevo = new File(nombre);
 	String informacion = nuevo.getAbsolutePath();
 	double bytes = 0;
 	if(nuevo.isFile())
@@ -172,7 +185,7 @@ public class ControladorDirectorio {
 	    informacion += "\nNo se puede ecribir";
 	
 	LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(nuevo.lastModified()), ZoneId.systemDefault());
-	informacion += "\n" + date;
+	informacion += "\n" + date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	
 	return informacion;
     }
